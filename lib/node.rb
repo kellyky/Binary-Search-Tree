@@ -4,5 +4,9 @@ require 'pry-byebug'
 
 # Creating individual nodes for the tree
 class Node
-  def initialize; end
+  def initialize(data)
+    @data = data
+    @right = nil
+    @left = nil
+  end
 end
