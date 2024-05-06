@@ -10,21 +10,19 @@ class Tree
   def initialize(arr)
     scrubbed_and_sorted_arr = arr.uniq.sort
     @root = build_tree(scrubbed_and_sorted_arr)
+    # binding.pry
   end
 
   def build_tree(arr)
     return if arr.empty?
     return Node.new(arr[-1]) if arr.length == 1
 
-    middle_index = arr.length / 2
-    root = arr[middle_index]
+    mid = arr.length / 2
+    root = arr[mid]
     node = Node.new(root)
 
-    left_subarr = arr.slice(0...middle_index)
-    node.left = build_tree(left_subarr)
-
-    right_subarr = arr.slice(1 + middle_index..-1)
-    node.right = build_tree(right_subarr)
+    node.left = build_tree(arr.slice(0...mid))
+    node.right = build_tree(arr.slice(1 + mid..-1))
 
     node
   end
@@ -35,4 +33,34 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
+
+  # Is this working correctly?
+  def insert(value, node = @root)
+    if value < node.data
+      if node.left.nil?
+        node.left = Node.new(value)
+      else
+        insert(value, node.left)
+      end
+    else
+      if node.right.nil?
+        node.right = Node.new(value)
+      else
+        insert(value, node.right)
+      end
+    end
+  end
+
+  def delete(value)
+  #   # delete a node with this value
+  #   # # how to handle if the node has children vs not?
+  end
+
+  # return the node with the given value
+  def find(value, node = @root)
+    return node.data if value == node.data
+
+    value < node.data ? find(value, node.left) : find(value, node.right)
+  end
+
 end
