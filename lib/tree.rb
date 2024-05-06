@@ -10,7 +10,6 @@ class Tree
   def initialize(arr)
     scrubbed_and_sorted_arr = arr.uniq.sort
     @root = build_tree(scrubbed_and_sorted_arr)
-    # binding.pry
   end
 
   def build_tree(arr)
@@ -27,11 +26,16 @@ class Tree
     node
   end
 
-  # # method provided / borrowed
-  def pretty_print(node = @root, prefix = '', is_left = true)
-    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
-    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
-    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  # method provided / borrowed & adapted
+  def pretty_print(node = @root, subtree = :left, prefix = '')
+    connector = subtree == :left ? '└── ' : '┌── '
+    new_prefix = "#{prefix}#{subtree == :left ? '    ' : '│   '}"
+
+    pretty_print(node.right, :right, "#{prefix}#{subtree == :left ? '│   ' : '    '}") if node.right
+
+    puts "#{prefix}#{connector}#{node.data}"
+
+    pretty_print(node.left, :left, new_prefix) if node.left
   end
 
   # Is this working correctly?
