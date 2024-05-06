@@ -4,6 +4,8 @@ require 'pry-byebug'
 
 # Creating individual nodes for the tree
 class Node
+  attr_accessor :data, :left, :right
+
   def initialize(data)
     @data = data
     @right = nil
