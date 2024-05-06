@@ -38,20 +38,15 @@ class Tree
     pretty_print(node.left, :left, new_prefix) if node.left
   end
 
-  # Is this working correctly?
   def insert(value, node = @root)
-    if value < node.data
-      if node.left.nil?
-        node.left = Node.new(value)
-      else
-        insert(value, node.left)
-      end
+    return unless find(value).nil?
+
+    dir = value < node.data ? :left : :right
+
+    if node.send(dir).nil?
+      node.send("#{dir}=", Node.new(value))
     else
-      if node.right.nil?
-        node.right = Node.new(value)
-      else
-        insert(value, node.right)
-      end
+      insert(value, node.send(dir))
     end
   end
 
@@ -62,7 +57,8 @@ class Tree
 
   # return the node with the given value
   def find(value, node = @root)
-    return node.data if value == node.data
+    return if node.nil?
+    return node if value == node.data
 
     value < node.data ? find(value, node.left) : find(value, node.right)
   end
