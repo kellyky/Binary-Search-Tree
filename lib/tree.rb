@@ -50,9 +50,32 @@ class Tree
     end
   end
 
-  def delete(value)
-  #   # delete a node with this value
-  #   # # how to handle if the node has children vs not?
+   def delete(value, node = @root)
+    return node if node.nil?
+
+    if value < node.data
+      node.left = delete(value, node.left)
+    elsif value > node.data
+      node.right = delete(value, node.right)
+    else
+      if node.left.nil?
+        return node.right
+      elsif node.right.nil?
+        return node.left
+      end
+
+      node.data = min_value(node.right)
+      node.right = delete(node.data, node.right)
+    end
+
+    node
+  end
+
+  def min_value(node)
+    binding.pry
+    current = node
+    current = current.left until current.left.nil?
+    current.data
   end
 
   # return the node with the given value
