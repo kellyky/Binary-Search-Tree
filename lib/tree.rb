@@ -86,4 +86,17 @@ class Tree
     value < node.data ? find(value, node.left) : find(value, node.right)
   end
 
+  def level_order(&block)
+    return if @root.nil?
+    queue = [@root]
+
+    until queue.empty?
+      node = queue.shift
+
+      block_given? ? yield(node) : (print "#{node}")
+
+      queue << node.left unless node.left.nil?
+      queue << node.right unless node.right.nil?
+    end
+  end
 end
