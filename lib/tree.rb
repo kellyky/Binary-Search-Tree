@@ -99,4 +99,34 @@ class Tree
       queue << node.right unless node.right.nil?
     end
   end
+
+  # Inorder >>> lefts, root, rights
+  def inorder(node = @root, &block)
+    return if node.nil?
+
+    inorder(node.left, &block)
+    block_given? ? yield(node) : (print "#{node}")
+    inorder(node.right, &block)
+  end
+
+  # Preorder >>> root, lefts, rights
+  def preorder(node = @root, &block)
+    return node if node.nil?
+
+    block_given? ? yield(node) : (print "#{node}")
+
+    preorder(node.left, &block)
+    preorder(node.right, &block)
+  end
+
+
+  # Postorder >>> lefts, rights, root
+  def postorder(node = @root, &block)
+    return node if node.nil?
+
+    preorder(node.left, &block)
+    preorder(node.right, &block)
+
+    block_given? ? yield(node) : (print "#{node}")
+  end
 end
