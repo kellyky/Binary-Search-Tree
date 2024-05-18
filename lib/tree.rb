@@ -14,6 +14,7 @@ class Tree
 
   def build_tree(arr)
     return if arr.empty?
+
     return Node.new(arr[-1]) if arr.length == 1
 
     mid = arr.length / 2
@@ -50,7 +51,7 @@ class Tree
     end
   end
 
-   def delete(value, node = @root)
+  def delete(value, node = @root)
     return node if node.nil?
 
     if value < node.data
@@ -58,11 +59,9 @@ class Tree
     elsif value > node.data
       node.right = delete(value, node.right)
     else
-      if node.left.nil?
-        return node.right
-      elsif node.right.nil?
-        return node.left
-      end
+      return node.right if node.left.nil?
+
+      return node.left if node.right.nil?
 
       node.data = min_value(node.right)
       node.right = delete(node.data, node.right)
@@ -77,9 +76,9 @@ class Tree
     current.data
   end
 
-  # return the node with the given value
   def find(value, node = @root)
     return if node.nil?
+
     return node if value == node.data
 
     value < node.data ? find(value, node.left) : find(value, node.right)
@@ -87,12 +86,13 @@ class Tree
 
   def level_order(&block)
     return if @root.nil?
+
     queue = [@root]
 
     until queue.empty?
       node = queue.shift
 
-      block_given? ? yield(node) : (print "#{node}")
+      block_given? ? yield(node) : (print node)
 
       queue << node.left unless node.left.nil?
       queue << node.right unless node.right.nil?
@@ -103,8 +103,9 @@ class Tree
   def inorder(node = @root, &block)
     return if node.nil?
 
+
     inorder(node.left, &block)
-    block_given? ? yield(node) : (print "#{node}")
+    block_given? ? yield(node) : (print node)
     inorder(node.right, &block)
   end
 
@@ -112,7 +113,7 @@ class Tree
   def preorder(node = @root, &block)
     return node if node.nil?
 
-    block_given? ? yield(node) : (print "#{node}")
+    block_given? ? yield(node) : (print node)
 
     preorder(node.left, &block)
     preorder(node.right, &block)
@@ -125,7 +126,7 @@ class Tree
     preorder(node.left, &block)
     preorder(node.right, &block)
 
-    block_given? ? yield(node) : (print "#{node}")
+    block_given? ? yield(node) : (print node)
   end
 
   def height(node)
@@ -150,7 +151,7 @@ class Tree
 
   def rebalance
     node_values = []
-    self.inorder { |node| node_values << node.data }
+    inorder { |node| node_values << node.data }
     @root = build_tree(node_values)
   end
 end
