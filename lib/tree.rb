@@ -143,4 +143,8 @@ class Tree
     dir = value < node.data ? :left : :right
     depth(value, sum + 1, node.send(dir))
   end
+
+  def balanced?
+    (height(@root.left) - height(@root.right)).abs <= 1
+  end
 end
