@@ -72,7 +72,6 @@ class Tree
   end
 
   def min_value(node)
-    binding.pry
     current = node
     current = current.left until current.left.nil?
     current.data
@@ -119,7 +118,6 @@ class Tree
     preorder(node.right, &block)
   end
 
-
   # Postorder >>> lefts, rights, root
   def postorder(node = @root, &block)
     return node if node.nil?
@@ -128,5 +126,21 @@ class Tree
     preorder(node.right, &block)
 
     block_given? ? yield(node) : (print "#{node}")
+  end
+
+  def height(node)
+    return -1 if node.nil?
+
+    left = height(node.left)
+    right = height(node.right)
+
+    [left, right].max + 1
+  end
+
+  def depth(value, sum = 0, node = @root)
+    return sum if value == node.data
+
+    dir = value < node.data ? :left : :right
+    depth(value, sum + 1, node.send(dir))
   end
 end
