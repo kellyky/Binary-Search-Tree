@@ -147,4 +147,10 @@ class Tree
   def balanced?
     (height(@root.left) - height(@root.right)).abs <= 1
   end
+
+  def rebalance
+    node_values = []
+    self.inorder { |node| node_values << node.data }
+    @root = build_tree(node_values)
+  end
 end
